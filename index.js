@@ -1,160 +1,80 @@
-//Document is the DOM can be accessed in the console with document.window.
-// Tree is from the top, html, body, p etc.
+// document.write("Hi I am text");
+//document.write("<h1> Hi h1>");
 
-//Problem: User interaction does not provide the correct results.
-//Solution: Add interactivity so the user can manage daily tasks.
-//Break things down into smaller steps and take each step at a time.
+const create = () => {
+  // 1. step
+  const newElement = document.createElement("div");
 
-//Event handling, uder interaction is what starts the code execution.
+  const newText = document.createTextNode("I am a new element 😉");
 
-var taskInput = document.getElementById("new-task"); //Add a new task.
-var addButton = document.getElementsByTagName("button")[0]; //first button
-var incompleteTaskHolder = document.getElementById("incomplete-tasks"); //ul of #incomplete-tasks
-var completedTasksHolder = document.getElementById("completed-tasks"); //completed-tasks
-
-//New task list item
-var createNewTaskElement = function (taskString) {
-  var listItem = document.createElement("li");
-
-  //input (checkbox)
-  var checkBox = document.createElement("input"); //checkbx
-  //label
-  var label = document.createElement("label"); //label
-  //input (text)
-  var editInput = document.createElement("input"); //text
-  //button.edit
-  var editButton = document.createElement("button"); //edit button
-
-  //button.delete
-  var deleteButton = document.createElement("button"); //delete button
-
-  label.innerText = taskString;
-
-  //Each elements, needs appending
-  checkBox.type = "checkbox";
-  editInput.type = "text";
-
-  editButton.innerText = "Edit"; //innerText encodes special characters, HTML does not.
-  editButton.className = "edit";
-  deleteButton.innerText = "Delete";
-  deleteButton.className = "delete";
-
-  //and appending.
-  listItem.appendChild(checkBox);
-  listItem.appendChild(label);
-  listItem.appendChild(editInput);
-  listItem.appendChild(editButton);
-  listItem.appendChild(deleteButton);
-  return listItem;
+  // 2. step
+  // div                  // text
+  newElement.appendChild(newText);
+  document.body.appendChild(newElement);
 };
 
-var addTask = function () {
-  console.log("Add Task...");
-  //Create a new list item with the text from the #new-task:
-  var listItem = createNewTaskElement(taskInput.value);
-
-  //Append listItem to incompleteTaskHolder
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
-
-  taskInput.value = "";
-};
-
-//Edit an existing task.
-
-var editTask = function () {
-  console.log("Edit Task...");
-  console.log("Change 'edit' to 'save'");
-
-  var listItem = this.parentNode;
-
-  var editInput = listItem.querySelector("input[type=text]");
-  var label = listItem.querySelector("label");
-  var containsClass = listItem.classList.contains("editMode");
-  //If class of the parent is .editmode
-  if (containsClass) {
-    //switch to .editmode
-    //label becomes the inputs value.
-    label.innerText = editInput.value;
+const addToList = (e) => {
+  // Preventing the from sending information out aka Reloading the page
+  e.preventDefault();
+  let userData = document.querySelector("#userData").value;
+  console.log(userData);
+  // Checking my input if it has a text
+  if (userData != "") {
+    let newLi = document.createElement("li");
+    let text = document.createTextNode(userData);
+    newLi.appendChild(text);
+    // Adding random colour to my list item
+    newLi.style.color = colorGen();
+    document.querySelector(".result").appendChild(newLi);
+    document.querySelector("#userData").value = "";
+    // Other way to add random colours for all of the list items that are in my page
+    // const listItems = document.querySelectorAll("li");
+    // listItems.forEach((item) => {
+    //   item.style.color = colorGen();
+    // });
+    const newContainer = document.createElement("div");
+    const doneButton = document.createElement("button");
+    const deleteButton = document.createElement("button");
+    // const checkBox = document.createElement("input");
+    // checkBox.type = "checkbox";
+    // newContainer.appendChild(checkBox);
+    // Adding some text
+    doneButton.innerHTML = "✓";
+    deleteButton.innerHTML = "✗";
+    // Injecting the buttons into the container
+    newContainer.appendChild(doneButton);
+    newContainer.appendChild(deleteButton);
+    // Adding class
+    doneButton.classList.add("done");
+    newLi.appendChild(newContainer);
+    // Complete function
+    // toggle will check if the class name exist, will remove it and if it's not will add it
+    const check = () => newLi.classList.toggle("completed");
+    // const del = () => newLi.remove() ;
+    // Adding event listener to my buttons
+    deleteButton.addEventListener("click", () => newLi.remove());
+    doneButton.addEventListener("click", check);
   } else {
-    editInput.value = label.innerText;
+    document.querySelector("#userData").placeholder = "Please Enter text first";
   }
-
-  //toggle .editmode on the parent.
-  listItem.classList.toggle("editMode");
 };
-
-//Delete task.
-var deleteTask = function () {
-  console.log("Delete Task...");
-
-  var listItem = this.parentNode;
-  var ul = listItem.parentNode;
-  //Remove the parent list item from the ul.
-  ul.removeChild(listItem);
+// Random colour generator in hexa number
+const colorGen = () => {
+  let result = "#";
+  let colorCode = "0123456789ABCDEF";
+  for (let i = 0; i < 6; i++) {
+    result += colorCode[Math.floor(Math.random() * 16)];
+  }
+  return result;
 };
-
-//Mark task completed
-var taskCompleted = function () {
-  console.log("Complete Task...");
-
-  //Append the task list item to the #completed-tasks
-  var listItem = this.parentNode;
-  completedTasksHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskIncomplete);
+// Functional check which key the user is pressing
+const keyCheck = (event) => {
+  console.log(event);
+  if (e.key == "Enter") addToList();
 };
+// Adding event listener to the input
+// const userInput = document.querySelector("#userData");
+// userInput.addEventListener("keypress", keyCheck);
 
-var taskIncomplete = function () {
-  console.log("Incomplete Task...");
-  //Mark task as incomplete.
-  //When the checkbox is unchecked
-  //Append the task list item to the #incomplete-tasks.
-  var listItem = this.parentNode;
-  incompleteTaskHolder.appendChild(listItem);
-  bindTaskEvents(listItem, taskCompleted);
-};
-
-var ajaxRequest = function () {
-  console.log("AJAX Request");
-};
-
-//The glue to hold it all together.
-
-//Set the click handler to the addTask function.
-addButton.onclick = addTask;
-addButton.addEventListener("click", addTask);
-addButton.addEventListener("click", ajaxRequest);
-
-var bindTaskEvents = function (taskListItem, checkBoxEventHandler) {
-  console.log("bind list item events");
-  //select ListItems children
-  var checkBox = taskListItem.querySelector("input[type=checkbox]");
-  var editButton = taskListItem.querySelector("button.edit");
-  var deleteButton = taskListItem.querySelector("button.delete");
-
-  //Bind editTask to edit button.
-  editButton.onclick = editTask;
-  //Bind deleteTask to delete button.
-  deleteButton.onclick = deleteTask;
-  //Bind taskCompleted to checkBoxEventHandler.
-  checkBox.onchange = checkBoxEventHandler;
-};
-
-//cycle over incompleteTaskHolder ul list items
-//for each list item
-for (var i = 0; i < incompleteTaskHolder.children.length; i++) {
-  //bind events to list items chldren(tasksCompleted)
-  bindTaskEvents(incompleteTaskHolder.children[i], taskCompleted);
-}
-
-//cycle over completedTasksHolder ul list items
-for (var i = 0; i < completedTasksHolder.children.length; i++) {
-  //bind events to list items chldren(tasksIncompleted)
-  bindTaskEvents(completedTasksHolder.children[i], taskIncomplete);
-}
-
-// Issues with usabiliy don't get seen until they are in front of a human tester.
-
-//prevent creation of empty tasks.
-
-//Shange edit to save when you are in edit mode.
+// Adding event listener to the form
+document.querySelector("form").addEventListener("submit", addToList);
