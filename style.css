@@ -13,27 +13,34 @@ body {
 
 main {
   position: absolute;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
-  height: 96%;
+  height: 90%;
   width: 43%;
   left: 25%;
+  top: 5%;
   background-image: url(./img/bg-blackboard.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 h1 {
+  left: 36%;
   color: white;
+  position: relative;
+  display: flex;
 }
 form {
+  left: 20%;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 50%;
   height: 3rem;
-  background-color: orange;
+  background-color: gray;
+  border-radius: 10px;
   width: 50%;
 }
 input[type="text"] {
@@ -43,6 +50,7 @@ button {
   width: 4rem;
   height: 1.5rem;
   border: none;
+  border-radius: 5px;
   background-color: navajowhite;
   font-family: Tahoma, Geneva, Verdana, sans-serif, cursive;
   font-size: 1rem;
