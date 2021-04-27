@@ -1,8 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   display: flex;
   align-items: center;
   width: 100vh;
   flex-direction: column;
+}
+
+main {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96%;
+  width: 43%;
+  left: 25%;
+  background-image: url(./img/bg-blackboard.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+h1 {
+  color: white;
 }
 form {
   display: flex;
