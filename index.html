@@ -5,16 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <title>DOM</title>
+    <title>ToDoToo</title>
   </head>
   <body>
     <main>
-      <h1>ToDo<span>App</span></h1>
-      <form>
-        <input type="text" name="userText" id="userData" />
-        <input type="submit" value="Add" />
-      </form>
-      <ul class="result"></ul>
+      <div id="myDIV" class="header">
+        <h1>My To Do List</h1>
+        <input type="text" id="myInput" placeholder="Title..." />
+        <span onclick="newElement()" class="addBtn">Add</span>
+      </div>
+      <ul id="myUL"></ul>
     </main>
     <script src="./index.js"></script>
   </body>
